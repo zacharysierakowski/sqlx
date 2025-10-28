@@ -746,15 +746,14 @@ func (r *Row) scanAny(dest interface{}, structOnly bool) error {
 		return r.err
 	}
 	defer r.rows.Close()
-	return AnyScan(r.rows, dest, structOnly)
+	return ScanSingleRow(r.rows, dest, structOnly)
 }
 
-// AnyScan scans a single Row into the dest, which may be a struct or a
-// scannable type.
-// Does not check for multiple rows; use QueryRow for that.
-// Does not check that dest is a struct if structOnly is false.
-// Does not check errors from r.Err(); caller must do that.
-func AnyScan(r ColScanner, dest interface{}, structOnly bool) error {
+// ScanSingleRow scans a single Row into the dest, which may be a struct or a scannable type.
+//
+// It assumes that r is positioned on a valid row (can be *Rows or *Row).
+// If structOnly is true, ScanSingleRow will return an error if dest is a scannable.
+func ScanSingleRow(r ColScanner, dest interface{}, structOnly bool) error {
 	v := reflect.ValueOf(dest)
 	if v.Kind() != reflect.Ptr {
 		return errors.New("must pass a pointer, not a value, to StructScan destination")
@@ -906,11 +905,7 @@ func structOnlyError(t reflect.Type) error {
 //	var ids []int
 //	ScanAll(rows, &ids, false)
 //
-// and ids will be a list of the id results.  I realize that this is a desirable
-// interface to expose to users, but for now it will only be exposed via changes
-// to `Get` and `Select`.  The reason that this has been implemented like this is
-// this is the only way to not duplicate reflect work in the new API while
-// maintaining backwards compatibility.
+// and ids will be a list of the id results.
 func ScanAll(rows rowsi, dest interface{}, structOnly bool) error {
 	var v, vp reflect.Value
 
