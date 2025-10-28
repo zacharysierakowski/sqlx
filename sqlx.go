@@ -749,10 +749,11 @@ func (r *Row) scanAny(dest interface{}, structOnly bool) error {
 	return ScanSingleRow(r, dest, structOnly)
 }
 
-// ScanSingleRow scans a single Row into the dest, which may be a struct or a scannable type.
+// ScanSingleRow scans a single Row into the dest.
 //
-// It assumes that r is positioned on a valid row (can be *Rows or *Row).
-// If structOnly is true, ScanSingleRow will return an error if dest is a scannable.
+// It assumes that r is positioned on a valid row.
+// If structOnly is true, an error will be returned if dest is a scannable type (for backwards compatibility with StructScan).
+// Callers are responsible for closing r.
 func ScanSingleRow(r ColScanner, dest interface{}, structOnly bool) error {
 	v := reflect.ValueOf(dest)
 	if v.Kind() != reflect.Ptr {
