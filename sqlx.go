@@ -746,7 +746,7 @@ func (r *Row) scanAny(dest interface{}, structOnly bool) error {
 		return r.err
 	}
 	defer r.rows.Close()
-	return ScanSingleRow(r.rows, dest, structOnly)
+	return ScanSingleRow(r, dest, structOnly)
 }
 
 // ScanSingleRow scans a single Row into the dest, which may be a struct or a scannable type.
