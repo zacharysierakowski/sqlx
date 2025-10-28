@@ -749,11 +749,6 @@ func (r *Row) scanAny(dest interface{}, structOnly bool) error {
 	return AnyScan(r.rows, dest, structOnly)
 }
 
-// StructScan a single Row into dest.
-func (r *Row) StructScan(dest interface{}) error {
-	return r.scanAny(dest, true)
-}
-
 // AnyScan scans a single Row into the dest, which may be a struct or a
 // scannable type.
 // Does not check for multiple rows; use QueryRow for that.
@@ -810,6 +805,11 @@ func AnyScan(r ColScanner, dest interface{}, structOnly bool) error {
 	}
 	// scan into the struct field pointers and append to our results
 	return r.Scan(values...)
+}
+
+// StructScan a single Row into dest.
+func (r *Row) StructScan(dest interface{}) error {
+	return r.scanAny(dest, true)
 }
 
 // SliceScan a row, returning a []interface{} with values similar to MapScan.
