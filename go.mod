@@ -1,4 +1,4 @@
-module github.com/jmoiron/sqlx
+module github.com/zacharysierakowski/sqlx
 
 go 1.10
 
@@ -7,5 +7,3 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mattn/go-sqlite3 v1.14.22
 )
-
-replace github.com/jmoiron/sqlx => github.com/zacharysierakowski/sqlx v1.4.0
