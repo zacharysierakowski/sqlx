@@ -785,9 +785,7 @@ func ScanSingleRow(r ColScanner, dest interface{}, structOnly bool) error {
 
 	var m *reflectx.Mapper
 	switch rows := r.(type) {
-	case *Rows:
-		m = rows.Mapper
-	case *Row:
+	case *Rows, *Row:
 		m = rows.Mapper
 	default:
 		m = mapper()
